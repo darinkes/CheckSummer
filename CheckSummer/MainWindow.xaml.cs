@@ -68,18 +68,17 @@ namespace CheckSummer
                 _calcTask = Task.Factory.StartNew(() =>
                     {
                         long calcedsize = 0;
+                        var files2Calc = new List<String>();
                         try
                         {
                             _calculating = true;
                             _stopwatch.Start();
                             var filenames =
                                 (string[]) e.Data.GetData(DataFormats.FileDrop, true);
-                            var files2Calc = new List<String>();
                             foreach (var filename in filenames)
                             {
                                 FileAttributes attr = File.GetAttributes(filename);
-                                if ((attr & FileAttributes.Directory) ==
-                                    FileAttributes.Directory)
+                                if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                                     files2Calc.AddRange(Directory.GetFiles(filename, "*.*",
                                         SearchOption.AllDirectories));
                                 else
@@ -99,7 +98,8 @@ namespace CheckSummer
                         }
                         catch (Exception ex)
                         {
-                            Debug.WriteLine(ex);
+                            MessageBox.Show(String.Format("{0}\n{1}", ex.Message, ex.StackTrace),
+                                "Error while calculating", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                         finally
                         {
@@ -107,7 +107,10 @@ namespace CheckSummer
                             _stopwatch.Stop();
                             var converter = new ByteConverter();
                             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
-                                Status = String.Format("Ready! {0} {1}", _stopwatch.Elapsed, converter.Convert(calcedsize, null, null, null))));
+                                Status = String.Format("Ready! Time: {0} Size: {1} Count: {2}",
+                                _stopwatch.Elapsed,
+                                converter.Convert(calcedsize, null, null, null),
+                                files2Calc.Count)));
                         }
 
                     });
