@@ -41,7 +41,7 @@ namespace CheckSummer
         {
             Debug.WriteLine("CalcCheckSums: " + Filename);
 
-            _stream = new FileStream(Filename, FileMode.Open);
+            _stream = new FileStream(Filename, FileMode.Open, FileAccess.Read, FileShare.Read);
             _stopwatch.Start();
 
             _md5Task = Task.Factory.StartNew(() =>
