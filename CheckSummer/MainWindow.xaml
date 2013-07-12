@@ -1,8 +1,68 @@
 ﻿<Window x:Class="CheckSummer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="CheckSummer" Height="350" Width="525">
+        xmlns:checkSummer="clr-namespace:CheckSummer"
+        Title="CheckSummer" Height="350" Width="525" AllowDrop="True" Drop="MainWindow_OnDrop">
+    <Window.Resources>
+        <checkSummer:ByteConverter x:Key="ByteConverter"/>
+    </Window.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <ListView Grid.Row="0" ItemsSource="{Binding CheckSummedFiles}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Filename" Margin="3"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Filename, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="MD5" Margin="3"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Md5, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="SHA1" Margin="3"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Sha1, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="SHA256" Margin="3"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Sha256, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
+
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="SHA512" Margin="3"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Sha512, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
+
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="FileSize" Margin="3"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding FileSize, Mode=OneWay, Converter={StaticResource ByteConverter}}" IsReadOnly="True" Margin="3"/>
+
+                        <TextBlock Grid.Row="6" Grid.Column="0" Text="SummedTime" Margin="3"/>
+                        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding SummedTime, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
         
+        <DockPanel Grid.Row="1">
+            <Button Content="Clear" Padding="5" Margin="3" DockPanel.Dock="Right" HorizontalAlignment="Right" Click="ButtonBase_OnClick"></Button>
+        </DockPanel>
+
+        <StatusBar Grid.Row="2">
+            <TextBlock Text="{Binding Status}" Margin="3"></TextBlock>
+        </StatusBar>
     </Grid>
 </Window>
