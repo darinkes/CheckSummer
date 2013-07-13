@@ -40,6 +40,10 @@
         </Style>
     </Window.Resources>
 
+    <Window.DataContext>
+        <checkSummer:MainWindowViewModel/>
+    </Window.DataContext>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
