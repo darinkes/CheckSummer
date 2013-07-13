@@ -26,7 +26,6 @@ namespace CheckSummer
         private Task _sha256Task;
         private Task _sha512Task;
         private readonly Stopwatch _stopwatch;
-        private FileStream _stream;
         #endregion
 
         public CheckSummedFile(string filename)
@@ -41,31 +40,72 @@ namespace CheckSummer
         {
             Debug.WriteLine("CalcCheckSums: " + Filename);
 
-            _stream = new FileStream(Filename, FileMode.Open, FileAccess.Read, FileShare.Read);
             _stopwatch.Start();
+
+            var fs = File.OpenRead(Filename);
+            var bytes = new byte[fs.Length];
+            try
+            {
+                fs.Read(bytes, 0, Convert.ToInt32(fs.Length));
+                fs.Close();
+            }
+            finally
+            {
+                fs.Close();
+            }
 
             _md5Task = Task.Factory.StartNew(() =>
             {
-                var md5 = MD5.Create();
-                Md5 = BitConverter.ToString(md5.ComputeHash(_stream)).Replace("-", "").ToLower();
+                try
+                {
+                    Md5 = BitConverter.ToString(MD5.Create().ComputeHash(bytes)).Replace("-", String.Empty).ToLower();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                    Md5 = ex.Message;
+                }
             });
 
             _sha1Task = Task.Factory.StartNew(() =>
             {
-                var sha1 = SHA1.Create();
-                Sha1 = BitConverter.ToString(sha1.ComputeHash(_stream)).Replace("-", "").ToLower();
+                try
+                {
+                    Sha1 = BitConverter.ToString(SHA1.Create().ComputeHash(bytes)).Replace("-", String.Empty).ToLower();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                    Sha1 = ex.Message;
+                }
             });
 
             _sha256Task = Task.Factory.StartNew(() =>
             {
-                var sha256 = SHA256.Create();
-                Sha256 = BitConverter.ToString(sha256.ComputeHash(_stream)).Replace("-", "").ToLower();
+                try
+                {
+                    Sha256 = BitConverter.ToString(SHA256.Create().ComputeHash(bytes)).Replace("-", String.Empty).ToLower();
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                    Sha256 = ex.Message;
+                }
             });
 
             _sha512Task = Task.Factory.StartNew(() =>
             {
-                var sha512 = SHA512.Create();
-                Sha512 = BitConverter.ToString(sha512.ComputeHash(_stream)).Replace("-", "").ToLower();
+                try
+                {
+                    Sha512 = BitConverter.ToString(SHA512.Create().ComputeHash(bytes)).Replace("-", String.Empty).ToLower();
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                    Sha512 = ex.Message;
+                }
             });
         }
 
@@ -76,7 +116,6 @@ namespace CheckSummer
             _sha256Task.Wait();
             _sha512Task.Wait();
             _stopwatch.Stop();
-            _stream.Close();
             SummedTime = _stopwatch.Elapsed;
         }
     }
