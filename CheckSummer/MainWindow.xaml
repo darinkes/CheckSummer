@@ -61,7 +61,7 @@
 
         <DataGrid Grid.Row="1" ItemsSource="{Binding CheckSummedFiles}" Margin="5" ToolTip="DragDrop Your Files/Folders Here"
                   AutoGenerateColumns="False" AlternationCount="2" SelectionMode="Single" BorderThickness="0"
-                  GridLinesVisibility="None" x:Name="DataGrid">
+                  GridLinesVisibility="None" x:Name="DataGrid" HeadersVisibility="None">
             <DataGrid.Background>
                 <ImageBrush ImageSource="{StaticResource Inbox}" Opacity="0.5" AlignmentX="Center" AlignmentY="Center" Stretch="None">
                     <ImageBrush.RelativeTransform>
