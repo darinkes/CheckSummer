@@ -8,11 +8,11 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("CheckSummer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Calculates and shows various checksums of files")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("CheckSummer")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyCopyright("Copyright © 2013 Stefan Rinkes <stefan.rinkes@gmail.com>")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
