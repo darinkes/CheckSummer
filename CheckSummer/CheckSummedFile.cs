@@ -9,7 +9,6 @@ namespace CheckSummer
     public class CheckSummedFile
     {
         #region Properties
-
         public string Md5 { get; private set; }
         public string Sha1 { get; private set; }
         public string Sha256 { get; private set; }
@@ -17,7 +16,6 @@ namespace CheckSummer
         public string Filename { get; private set; }
         public long FileSize { get; private set; }
         public TimeSpan SummedTime { get; private set; }
-
         #endregion
 
         #region Fields
