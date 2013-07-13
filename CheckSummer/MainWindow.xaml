@@ -3,21 +3,129 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:checkSummer="clr-namespace:CheckSummer" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-        Title="CheckSummer" Height="350" Width="525" AllowDrop="True" Drop="MainWindow_OnDrop">
+        Title="CheckSummer" Height="768" Width="1024" AllowDrop="True" Drop="MainWindow_OnDrop">
     <Window.Resources>
         <checkSummer:ByteConverter x:Key="ByteConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <DrawingImage x:Key="Inbox">
+            <DrawingImage.Drawing>
+                <DrawingGroup>
+                    <DrawingGroup.Children>
+                        <GeometryDrawing Brush="SteelBlue" Geometry="M25.3333,52.25L50.6666,52.25 50.6666,45.9167 55.4166,45.9167 55.4166,57 20.5833,57 20.5833,45.9167 25.3333,45.9167 25.3333,52.25z M34.8333,15.8333L41.1667,15.8333 41.1667,36.4167 49.0833,26.9167 49.0833,36.4167 38,49.0833 26.9167,36.4167 26.9167,26.9167 34.8333,36.4167 34.8333,15.8333z"/>
+                    </DrawingGroup.Children>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+        <DrawingImage x:Key="Clear">
+            <DrawingImage.Drawing>
+                <DrawingGroup>
+                    <DrawingGroup.Children>
+                        <GeometryDrawing Brush="SteelBlue" Geometry="M22,24L47,24 59,36C60.2367,37.2367,60.2367,38.7633,59,40L47,52 22,52C20.2511,52,19,50.7489,19,49L19,27C19,25.2511,20.2511,24,22,24z M25,27C23.6397,27,22,28.6397,22,30L22,46C22,47.3603,23.6397,49,25,49L45,49 54.7996,39.6178C55.7614,38.656,55.7614,37.0965,54.7995,36.1347L45,27 25,27z M40.4314,45.8369L34.8335,40.239 29.2355,45.8369 26.9963,43.5977 32.5943,37.9998 26.9964,32.4019 29.2356,30.1627 34.8335,35.7606 40.4314,30.1628 42.6705,32.4019 37.0726,37.9998 42.6706,43.5978 40.4314,45.8369z"/>
+                    </DrawingGroup.Children>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+        <DrawingImage x:Key="Page">
+            <DrawingImage.Drawing>
+                <DrawingGroup>
+                    <DrawingGroup.Children>
+                        <GeometryDrawing Brush="SteelBlue" Geometry="M20,17L44,17 56,29 56,59 20,59 20,17z M24,21L24,55 52,55 52,34 39,34 39,21 24,21z M43,21L43,30 52,30 43,21z"/>
+                    </DrawingGroup.Children>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+        <Style TargetType="TextBlock" x:Key="TextBlockStyle">
+            <Setter Property="Background" Value="Transparent"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
     </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <ListView Grid.Row="0" ItemsSource="{Binding CheckSummedFiles}">
-            <ListView.ItemTemplate>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+            <TextBlock Text="Filter:" Margin="5" FontSize="16" VerticalAlignment="Center"/>
+            <TextBox Width="200" Margin="5" Padding="5" Text="{Binding Filter}" TextChanged="TextBoxBase_OnTextChanged"/>
+            <Button Margin="5" HorizontalAlignment="Right" Click="ButtonBase_OnClick2">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource Clear}" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></Image>
+                    <TextBlock Text="Clear" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></TextBlock>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+        <DataGrid Grid.Row="1" ItemsSource="{Binding CheckSummedFiles}" Margin="5" ToolTip="DragDrop Your Files/Folders Here"
+                  AutoGenerateColumns="False" AlternationCount="2" SelectionMode="Single" BorderThickness="0"
+                  GridLinesVisibility="None" x:Name="DataGrid">
+            <DataGrid.Background>
+                <ImageBrush ImageSource="{StaticResource Inbox}" Opacity="0.5" AlignmentX="Center" AlignmentY="Center" Stretch="None">
+                    <ImageBrush.RelativeTransform>
+                        <TransformGroup>
+                            <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleX="5" ScaleY="5"/>
+                            <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                            <RotateTransform CenterY="0.5" CenterX="0.5"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </ImageBrush.RelativeTransform>
+                </ImageBrush>
+            </DataGrid.Background>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="ToolTip" Value="Click to view details"></Setter>
+                    <Style.Triggers>
+                        <Trigger Property="AlternationIndex" Value="0">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Opacity="0.4" Color="LightBlue"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="AlternationIndex" Value="1">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Opacity="0.4" Color="SteelBlue"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="Black" />
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{StaticResource Page}" Margin="3" Width="20" Height="20" Cursor="Hand"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Filename">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Filename, Mode=OneWay}" Margin="3" Style="{StaticResource TextBlockStyle}" Cursor="Hand"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
-                    <Grid d:DataContext="{d:DesignInstance }">
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -30,40 +138,69 @@
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Filename" Margin="3"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Filename, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Background" Value="Transparent"></Setter>
+                            </Style>
+                            <Style TargetType="TextBox">
+                                <Setter Property="Background" Value="Transparent"></Setter>
+                                <Setter Property="BorderThickness" Value="0"></Setter>
+                            </Style>
+                        </Grid.Resources>
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="MD5" Margin="3"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Md5, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="MD5:" Margin="3"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Md5, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="SHA1" Margin="3"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Sha1, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="SHA1:" Margin="3"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Sha1, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
 
-                        <TextBlock Grid.Row="3" Grid.Column="0" Text="SHA256" Margin="3"/>
-                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Sha256, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="SHA256:" Margin="3"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Sha256, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
 
-                        <TextBlock Grid.Row="4" Grid.Column="0" Text="SHA512" Margin="3"/>
-                        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Sha512, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="SHA512:" Margin="3"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Sha512, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
 
-                        <TextBlock Grid.Row="5" Grid.Column="0" Text="FileSize" Margin="3"/>
-                        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding FileSize, Mode=OneWay, Converter={StaticResource ByteConverter}}" IsReadOnly="True" Margin="3"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="FileSize:" Margin="3"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding FileSize, Mode=OneWay, Converter={StaticResource ByteConverter}}" IsReadOnly="True" Margin="3"/>
 
-                        <TextBlock Grid.Row="6" Grid.Column="0" Text="SummedTime" Margin="3"/>
-                        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding SummedTime, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="SummedTime:" Margin="3"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding SummedTime, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
                     </Grid>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        
-        <DockPanel Grid.Row="1">
-            <Button Content="Clear" Padding="5" Margin="3" DockPanel.Dock="Right" HorizontalAlignment="Right" Click="ButtonBase_OnClick"></Button>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
+
+        <DockPanel Grid.Row="2">
+            <DockPanel.Resources>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Calculating}" Value="True">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Calculating}" Value="False">
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DockPanel.Resources>
+            <Button Margin="3" DockPanel.Dock="Right" HorizontalAlignment="Right" Click="ButtonBase_OnClick">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource Clear}" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></Image>
+                    <TextBlock Text="Clear List" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></TextBlock>
+                </StackPanel>
+            </Button>
         </DockPanel>
 
-        <StatusBar Grid.Row="2">
-            <TextBlock Text="{Binding Status}" Margin="3"></TextBlock>
+        <StatusBar Grid.Row="3">
+            <ProgressBar Width="100" Height="20" Value="{Binding Progress}" Foreground="SteelBlue"
+                         Visibility="{Binding Calculating, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <ProgressBar.ToolTip>
+                    <TextBlock Text="{Binding Progress, StringFormat={}{0:N0}%}"/>
+                </ProgressBar.ToolTip>
+                </ProgressBar>
+            <TextBlock Text="{Binding Status}" Margin="3" Background="Transparent"/>
         </StatusBar>
     </Grid>
 </Window>
