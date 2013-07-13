@@ -122,8 +122,8 @@ namespace CheckSummer
                                     new Action(() => {
                                             CheckSummedFiles.Add(checkfile);
                                             Progress = (index1/(double)files2Calc.Count) * 100;
-                                            if (DataGrid.SelectedItem == null)
-                                                DataGrid.SelectedItem = checkfile;
+                                            if (ChecksumFilesDataGrid.SelectedItem == null)
+                                                ChecksumFilesDataGrid.SelectedItem = checkfile;
                                     }));
                             }
                         }

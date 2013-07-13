@@ -59,9 +59,25 @@
             </Button>
         </StackPanel>
 
-        <DataGrid Grid.Row="1" ItemsSource="{Binding CheckSummedFiles}" Margin="5" ToolTip="DragDrop Your Files/Folders Here"
-                  AutoGenerateColumns="False" AlternationCount="2" SelectionMode="Single" BorderThickness="0"
-                  GridLinesVisibility="None" x:Name="DataGrid" HeadersVisibility="None">
+        <TextBlock Grid.Row="1" Text="Drag&amp;Drop Your Files/Folders Here" Foreground="DarkBlue" FontWeight="Bold" FontSize="20"
+                    HorizontalAlignment="Center" Margin="0,100,0,0">
+            <TextBlock.Resources>
+                <Style TargetType="TextBlock">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HasItems, ElementName=ChecksumFilesDataGrid, Mode=OneWay}" Value="False">
+                            <Setter Property="Visibility" Value="Visible"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding HasItems, ElementName=ChecksumFilesDataGrid, Mode=OneWay}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Resources>
+        </TextBlock>
+
+        <DataGrid Grid.Row="1" ItemsSource="{Binding CheckSummedFiles}" Margin="5" ToolTip="Drag&amp;Drop Your Files/Folders Here"
+                AutoGenerateColumns="False" AlternationCount="2" SelectionMode="Single" BorderThickness="0"
+                GridLinesVisibility="None" x:Name="ChecksumFilesDataGrid" HeadersVisibility="None">
             <DataGrid.Background>
                 <ImageBrush ImageSource="{StaticResource Inbox}" Opacity="0.5" AlignmentX="Center" AlignmentY="Center" Stretch="None">
                     <ImageBrush.RelativeTransform>
