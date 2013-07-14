@@ -100,7 +100,7 @@
 
         <DataGrid Grid.Row="2" ItemsSource="{Binding CheckSummedFiles}" Margin="5" ToolTip="{lex:Loc DragDropInfo}"
                 AutoGenerateColumns="False" AlternationCount="2" SelectionMode="Single" BorderThickness="0"
-                GridLinesVisibility="None" x:Name="ChecksumFilesDataGrid" HeadersVisibility="None">
+                GridLinesVisibility="None" x:Name="ChecksumFilesDataGrid" HeadersVisibility="None" SelectedItem="{Binding SelectedCheckSummedFile}">
             <DataGrid.Background>
                 <ImageBrush ImageSource="{StaticResource Inbox}" Opacity="0.5" AlignmentX="Center" AlignmentY="Center" Stretch="None">
                     <ImageBrush.RelativeTransform>

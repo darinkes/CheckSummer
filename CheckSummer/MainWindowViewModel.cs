@@ -90,6 +90,14 @@ namespace CheckSummer
             set { _shortcutExists = value; RaisePropertyChanged("ShortcutExists"); }
         }
 
+        private CheckSummedFile _selectedCheckSummedFile;
+
+        public CheckSummedFile SelectedCheckSummedFile
+        {
+            get { return _selectedCheckSummedFile; }
+            set { _selectedCheckSummedFile = value; RaisePropertyChanged("SelectedCheckSummedFile"); }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void RaisePropertyChanged(string property)
@@ -166,6 +174,8 @@ namespace CheckSummer
                             {
                                 CheckSummedFiles.Add(checkfile);
                                 Progress = (index1 / (double)files2Calc.Count) * 100;
+                                if (SelectedCheckSummedFile == null)
+                                    SelectedCheckSummedFile = checkfile;
                             }));
                     }
                 }
