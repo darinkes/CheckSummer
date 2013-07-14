@@ -201,31 +201,53 @@ namespace CheckSummer
 
         private bool CheckShortcut()
         {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Classes\*\shell\CheckSummer\command");
-            RegistryKey key2 = Registry.CurrentUser.OpenSubKey(@"Software\Classes\Directory\shell\CheckSummer\command");
-            if (key2 != null && (key != null && (key.GetValue("").ToString() != System.Reflection.Assembly.GetEntryAssembly().Location + " \"%1\"" ||
-                                                 key2.GetValue("").ToString() != System.Reflection.Assembly.GetEntryAssembly().Location + " \"%1\"")))
-                return false;
-            return true;
+            try
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Classes\*\shell\CheckSummer\command");
+                RegistryKey key2 =
+                    Registry.CurrentUser.OpenSubKey(@"Software\Classes\Directory\shell\CheckSummer\command");
+                if ((key == null ||
+                     key.GetValue("").ToString() != System.Reflection.Assembly.GetEntryAssembly().Location + " \"%1\"") ||
+                    (key2 == null ||
+                     key2.GetValue("").ToString() != System.Reflection.Assembly.GetEntryAssembly().Location + " \"%1\""))
+                    return false;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(String.Format("{0}\n{1}", ex.Message, ex.StackTrace),
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShortcutExists = false;
+            }
+            return false;
         }
 
         internal void SetShortcut()
         {
-            if (!CheckShortcut())
+            try
             {
-                RegistryKey key = Registry.CurrentUser.CreateSubKey(@"Software\Classes\*\shell\CheckSummer\command");
-                RegistryKey key2 = Registry.CurrentUser.CreateSubKey(@"Software\Classes\Directory\shell\CheckSummer\command");
-                if (key != null)
-                    key.SetValue("", System.Reflection.Assembly.GetEntryAssembly().Location + " \"%1\"");
-                if (key2 != null)
-                    key2.SetValue("", System.Reflection.Assembly.GetEntryAssembly().Location + " \"%1\"");
+                if (!CheckShortcut())
+                {
+                    RegistryKey key = Registry.CurrentUser.CreateSubKey(@"Software\Classes\*\shell\CheckSummer\command");
+                    RegistryKey key2 = Registry.CurrentUser.CreateSubKey(@"Software\Classes\Directory\shell\CheckSummer\command");
+                    if (key != null)
+                        key.SetValue("", System.Reflection.Assembly.GetEntryAssembly().Location + " \"%1\"");
+                    if (key2 != null)
+                        key2.SetValue("", System.Reflection.Assembly.GetEntryAssembly().Location + " \"%1\"");
+                }
+                else
+                {
+
+                        Registry.CurrentUser.DeleteSubKey(@"Software\Classes\*\shell\CheckSummer\command");
+                        Registry.CurrentUser.DeleteSubKey(@"Software\Classes\*\shell\CheckSummer");
+                        Registry.CurrentUser.DeleteSubKey(@"Software\Classes\Directory\shell\CheckSummer\command");
+                        Registry.CurrentUser.DeleteSubKey(@"Software\Classes\Directory\shell\CheckSummer\");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Registry.CurrentUser.DeleteSubKey(@"Software\Classes\*\shell\CheckSummer\command");
-                Registry.CurrentUser.DeleteSubKey(@"Software\Classes\*\shell\CheckSummer");
-                Registry.CurrentUser.DeleteSubKey(@"Software\Classes\Directory\shell\CheckSummer\command");
-                Registry.CurrentUser.DeleteSubKey(@"Software\Classes\Directory\shell\CheckSummer\");
+                MessageBox.Show(String.Format("{0}\n{1}", ex.Message, ex.StackTrace),
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             ShortcutExists = CheckShortcut();
         }
