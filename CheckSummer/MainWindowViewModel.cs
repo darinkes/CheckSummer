@@ -203,7 +203,10 @@ namespace CheckSummer
         {
             RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Classes\*\shell\CheckSummer\command");
             RegistryKey key2 = Registry.CurrentUser.OpenSubKey(@"Software\Classes\Directory\shell\CheckSummer\command");
-            return key != null && key2 != null;
+            if (key2 != null && (key != null && (key.GetValue("").ToString() != System.Reflection.Assembly.GetEntryAssembly().Location + " \"%1\"" ||
+                                                 key2.GetValue("").ToString() != System.Reflection.Assembly.GetEntryAssembly().Location + " \"%1\"")))
+                return false;
+            return true;
         }
 
         internal void SetShortcut()
