@@ -61,6 +61,15 @@ namespace CheckSummer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Explorer Menu Entry.
+        /// </summary>
+        public static string AddShortcut {
+            get {
+                return ResourceManager.GetString("AddShortcut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Size:.
         /// </summary>
         public static string CalcedSize {

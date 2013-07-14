@@ -4,10 +4,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using CheckSummer.Properties;
+using Microsoft.Win32;
 
 namespace CheckSummer
 {
@@ -80,6 +82,14 @@ namespace CheckSummer
             set { _calcedsize = value; RaisePropertyChanged("CalcedSize"); }
         }
 
+        private bool _shortcutExists;
+
+        public bool ShortcutExists
+        {
+            get { return _shortcutExists; }
+            set { _shortcutExists = value; RaisePropertyChanged("ShortcutExists"); }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void RaisePropertyChanged(string property)
@@ -113,6 +123,7 @@ namespace CheckSummer
                                 DisplayName = "English"
                             }
                         };
+            ShortcutExists = CheckShortcut();
         }
 
         internal void CalcChecksums(string[] filenames)
@@ -125,6 +136,7 @@ namespace CheckSummer
                 {
                     Calculating = true;
                     Progress = 0;
+                    Thread.Sleep(100); // XXX: give the GUI some time to be drawn before using 100% CPU ;)
                     _stopwatch.Reset();
                     _stopwatch.Start();
 
@@ -175,6 +187,34 @@ namespace CheckSummer
                     }));
                 }
             });
+        }
+
+        private bool CheckShortcut()
+        {
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Classes\*\shell\CheckSummer\command");
+            RegistryKey key2 = Registry.CurrentUser.OpenSubKey(@"Software\Classes\Directory\shell\CheckSummer\command");
+            return key != null && key2 != null;
+        }
+
+        internal void SetShortcut()
+        {
+            if (!CheckShortcut())
+            {
+                RegistryKey key = Registry.CurrentUser.CreateSubKey(@"Software\Classes\*\shell\CheckSummer\command");
+                RegistryKey key2 = Registry.CurrentUser.CreateSubKey(@"Software\Classes\Directory\shell\CheckSummer\command");
+                if (key != null)
+                    key.SetValue("", System.Reflection.Assembly.GetEntryAssembly().Location + " \"%1\"");
+                if (key2 != null)
+                    key2.SetValue("", System.Reflection.Assembly.GetEntryAssembly().Location + " \"%1\"");
+            }
+            else
+            {
+                Registry.CurrentUser.DeleteSubKey(@"Software\Classes\*\shell\CheckSummer\command");
+                Registry.CurrentUser.DeleteSubKey(@"Software\Classes\*\shell\CheckSummer");
+                Registry.CurrentUser.DeleteSubKey(@"Software\Classes\Directory\shell\CheckSummer\command");
+                Registry.CurrentUser.DeleteSubKey(@"Software\Classes\Directory\shell\CheckSummer\");
+            }
+            ShortcutExists = CheckShortcut();
         }
     }
 }

@@ -67,6 +67,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </MenuItem>
+                <MenuItem Header="{lex:Loc AddShortcut}" Click="MenuItem_OnClick" IsChecked="{Binding ShortcutExists}" />
             </MenuItem>
         </Menu>
 

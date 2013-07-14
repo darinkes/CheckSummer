@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -40,6 +41,13 @@ namespace CheckSummer
                 _mainWindowViewModel.Language =
                     _mainWindowViewModel.Languages.FirstOrDefault(
                         l => l.ConfigName == Properties.Settings.Default["Language"].ToString());
+            }
+
+            var args = new List<String>(Environment.GetCommandLineArgs());
+            if (args.Any())
+            {
+                args.RemoveAt(0);
+                _mainWindowViewModel.CalcChecksums(args.ToArray());
             }
         }
 
@@ -99,6 +107,11 @@ namespace CheckSummer
             if (language.CultureName == LocalizeDictionary.Instance.Culture.ToString())
                 return;
             LocalizeDictionary.Instance.Culture = CultureInfo.GetCultureInfo(language.CultureName);
+        }
+
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            _mainWindowViewModel.SetShortcut();
         }
     }
 }
