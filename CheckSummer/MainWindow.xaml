@@ -3,6 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:checkSummer="clr-namespace:CheckSummer" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        lex:ResxLocalizationProvider.DefaultDictionary="Resources"
+        lex:ResxLocalizationProvider.DefaultAssembly="CheckSummer"
         Title="CheckSummer" Height="768" Width="1024" AllowDrop="True" Drop="MainWindow_OnDrop">
     <Window.Resources>
         <checkSummer:ByteConverter x:Key="ByteConverter"/>
@@ -47,23 +50,38 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+        <Menu Grid.Row="0">
+            <MenuItem Header="{lex:Loc File}">
+                <MenuItem Header="{lex:Loc Language}">
+                    <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding Language}" SelectionChanged="Selector_OnSelectionChanged">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
             <TextBlock Text="Filter:" Margin="5" FontSize="16" VerticalAlignment="Center"/>
             <TextBox Width="200" Margin="5" Padding="5" Text="{Binding Filter}" TextChanged="TextBoxBase_OnTextChanged"/>
             <Button Margin="5" HorizontalAlignment="Right" Click="ButtonBase_OnClick2">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="{StaticResource Clear}" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></Image>
-                    <TextBlock Text="Clear" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></TextBlock>
+                    <TextBlock Text="{lex:Loc Clear}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></TextBlock>
                 </StackPanel>
             </Button>
         </StackPanel>
 
-        <TextBlock Grid.Row="1" Text="Drag&amp;Drop Your Files/Folders Here" Foreground="DarkBlue" FontWeight="Bold" FontSize="20"
+        <TextBlock Grid.Row="2" Text="{lex:Loc DragDropInfo}" Foreground="DarkBlue" FontWeight="Bold" FontSize="20"
                     HorizontalAlignment="Center" Margin="0,100,0,0">
             <TextBlock.Resources>
                 <Style TargetType="TextBlock">
@@ -79,7 +97,7 @@
             </TextBlock.Resources>
         </TextBlock>
 
-        <DataGrid Grid.Row="1" ItemsSource="{Binding CheckSummedFiles}" Margin="5" ToolTip="Drag&amp;Drop Your Files/Folders Here"
+        <DataGrid Grid.Row="2" ItemsSource="{Binding CheckSummedFiles}" Margin="5" ToolTip="{lex:Loc DragDropInfo}"
                 AutoGenerateColumns="False" AlternationCount="2" SelectionMode="Single" BorderThickness="0"
                 GridLinesVisibility="None" x:Name="ChecksumFilesDataGrid" HeadersVisibility="None">
             <DataGrid.Background>
@@ -96,7 +114,7 @@
             </DataGrid.Background>
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
-                    <Setter Property="ToolTip" Value="Click to view details"></Setter>
+                    <Setter Property="ToolTip" Value="{lex:Loc ClickForDetails}"/>
                     <Style.Triggers>
                         <Trigger Property="AlternationIndex" Value="0">
                             <Setter Property="Background">
@@ -182,17 +200,17 @@
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="SHA512:" Margin="3"/>
                         <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Sha512, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
 
-                        <TextBlock Grid.Row="4" Grid.Column="0" Text="FileSize:" Margin="3"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="{lex:Loc FileSize}" Margin="3"/>
                         <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding FileSize, Mode=OneWay, Converter={StaticResource ByteConverter}}" IsReadOnly="True" Margin="3"/>
 
-                        <TextBlock Grid.Row="5" Grid.Column="0" Text="SummedTime:" Margin="3"/>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="{lex:Loc SummedTime}" Margin="3"/>
                         <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding SummedTime, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
                     </Grid>
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
         </DataGrid>
 
-        <DockPanel Grid.Row="2">
+        <DockPanel Grid.Row="3">
             <DockPanel.Resources>
                 <Style TargetType="Button">
                     <Style.Triggers>
@@ -208,19 +226,38 @@
             <Button Margin="3" DockPanel.Dock="Right" HorizontalAlignment="Right" Click="ButtonBase_OnClick">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="{StaticResource Clear}" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></Image>
-                    <TextBlock Text="Clear List" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></TextBlock>
+                    <TextBlock Text="{lex:Loc ClearList}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></TextBlock>
                 </StackPanel>
             </Button>
         </DockPanel>
 
-        <StatusBar Grid.Row="3">
+        <StatusBar Grid.Row="4">
+            <StatusBar.Resources>
+                <Style TargetType="TextBlock" x:Key="TextBlockHide">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Calculating}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Calculating}" Value="False">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StatusBar.Resources>
             <ProgressBar Width="100" Height="20" Value="{Binding Progress}" Foreground="SteelBlue"
                          Visibility="{Binding Calculating, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <ProgressBar.ToolTip>
                     <TextBlock Text="{Binding Progress, StringFormat={}{0:N0}%}"/>
                 </ProgressBar.ToolTip>
-                </ProgressBar>
+            </ProgressBar>
+
             <TextBlock Text="{Binding Status}" Margin="3" Background="Transparent"/>
+            <TextBlock Text="{lex:Loc Time}" Margin="3" Background="Transparent" Style="{StaticResource TextBlockHide}"/>
+            <TextBlock Text="{Binding Time}" Margin="3" Background="Transparent" Style="{StaticResource TextBlockHide}"/>
+            <TextBlock Text="{lex:Loc CalcedSize}" Margin="3" Background="Transparent" Style="{StaticResource TextBlockHide}"/>
+            <TextBlock Text="{Binding CalcedSize}" Margin="3" Background="Transparent" Style="{StaticResource TextBlockHide}"/>
+            <TextBlock Text="{lex:Loc Count}" Margin="3" Background="Transparent" Style="{StaticResource TextBlockHide}"/>
+            <TextBlock Text="{Binding CheckSummedFiles.Count}" Margin="3" Background="Transparent" Style="{StaticResource TextBlockHide}"/>
         </StatusBar>
     </Grid>
 </Window>

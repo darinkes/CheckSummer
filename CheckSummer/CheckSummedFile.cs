@@ -36,8 +36,6 @@ namespace CheckSummer
 
         public void CalcCheckSums()
         {
-            Debug.WriteLine("CalcCheckSums: " + Filename);
-
             _stopwatch.Start();
 
             var fs = File.OpenRead(Filename);

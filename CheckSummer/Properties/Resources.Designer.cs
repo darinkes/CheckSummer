@@ -22,7 +22,7 @@ namespace CheckSummer.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace CheckSummer.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CheckSummer.Properties.Resources", typeof(Resources).Assembly);
@@ -51,12 +51,165 @@ namespace CheckSummer.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size:.
+        /// </summary>
+        public static string CalcedSize {
+            get {
+                return ResourceManager.GetString("CalcedSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        public static string Clear {
+            get {
+                return ResourceManager.GetString("Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear List.
+        /// </summary>
+        public static string ClearList {
+            get {
+                return ResourceManager.GetString("ClearList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to view details.
+        /// </summary>
+        public static string ClickForDetails {
+            get {
+                return ResourceManager.GetString("ClickForDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Count:.
+        /// </summary>
+        public static string Count {
+            get {
+                return ResourceManager.GetString("Count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drag&amp;Drop Your Files/Folders Here.
+        /// </summary>
+        public static string DragDropInfo {
+            get {
+                return ResourceManager.GetString("DragDropInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _File.
+        /// </summary>
+        public static string File {
+            get {
+                return ResourceManager.GetString("File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filesize:.
+        /// </summary>
+        public static string FileSize {
+            get {
+                return ResourceManager.GetString("FileSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Language.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculation running.
+        /// </summary>
+        public static string MainWindow_MainWindow_OnDrop_Calculation_running {
+            get {
+                return ResourceManager.GetString("MainWindow_MainWindow_OnDrop_Calculation_running", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please wait till Calculation has finished.
+        /// </summary>
+        public static string MainWindow_MainWindow_OnDrop_Please_wait_till_Calculation_has_finished {
+            get {
+                return ResourceManager.GetString("MainWindow_MainWindow_OnDrop_Please_wait_till_Calculation_has_finished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculating {0}.
+        /// </summary>
+        public static string MainWindowViewModel_CalcChecksums_Calculating__0_ {
+            get {
+                return ResourceManager.GetString("MainWindowViewModel_CalcChecksums_Calculating__0_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while calculating.
+        /// </summary>
+        public static string MainWindowViewModel_CalcChecksums_Error_while_calculating {
+            get {
+                return ResourceManager.GetString("MainWindowViewModel_CalcChecksums_Error_while_calculating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ready! Time: {0} Size: {1} Count: {2}.
+        /// </summary>
+        public static string MainWindowViewModel_CalcChecksums_Ready__Time___0__Size___1__Count___2_ {
+            get {
+                return ResourceManager.GetString("MainWindowViewModel_CalcChecksums_Ready__Time___0__Size___1__Count___2_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status:.
+        /// </summary>
+        public static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time for Calculation:.
+        /// </summary>
+        public static string SummedTime {
+            get {
+                return ResourceManager.GetString("SummedTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time:.
+        /// </summary>
+        public static string Time {
+            get {
+                return ResourceManager.GetString("Time", resourceCulture);
             }
         }
     }
