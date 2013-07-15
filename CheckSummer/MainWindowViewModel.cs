@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -255,6 +256,23 @@ namespace CheckSummer
                     "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             ShortcutExists = CheckShortcut();
+        }
+
+        internal void SaveChecksums(string filename)
+        {
+            var tosave = new StringBuilder();
+            foreach (var entry in CheckSummedFiles)
+            {
+                tosave.AppendLine(string.Format("SHA256 ({0}) = {1}",
+                                                entry.Filename,
+                                                entry.Sha256
+                                      ));
+                tosave.AppendLine(string.Format("SHA512 ({0}) = {1}",
+                                                entry.Filename,
+                                                entry.Sha512
+                      ));
+            }
+            File.WriteAllText(filename, tosave.ToString(), Encoding.Default);
         }
     }
 }

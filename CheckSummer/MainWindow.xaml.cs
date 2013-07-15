@@ -138,5 +138,17 @@ namespace CheckSummer
                 _mainWindowViewModel.CalcChecksums(dlg.FileName);
             }
         }
+
+        private void ButtonBaseSave_OnClick(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.SaveFileDialog {FileName = "test"};
+
+            var result = dlg.ShowDialog();
+
+            if (result.Value)
+            {
+                _mainWindowViewModel.SaveChecksums(dlg.FileName);
+            }
+        }
     }
 }

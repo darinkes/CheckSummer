@@ -78,6 +78,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CheckSummedFileInfo.cs" />
     <Compile Include="Properties\Resources.de.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -158,7 +159,7 @@
       <EmbeddedResource Include="@(ReferenceCopyLocalPaths)" Condition="'%(ReferenceCopyLocalPaths.Extension)' == '.dll'">
         <LogicalName>%(ReferenceCopyLocalPaths.DestinationSubDirectory)%(ReferenceCopyLocalPaths.Filename)%(ReferenceCopyLocalPaths.Extension)</LogicalName>
       </EmbeddedResource>
-	  <EmbeddedResource Include="$(OutputPath)\de\CheckSummer.resources.dll">
+      <EmbeddedResource Include="$(OutputPath)\de\CheckSummer.resources.dll">
         <LogicalName>CheckSummer.resources.dll</LogicalName>
       </EmbeddedResource>
     </ItemGroup>
