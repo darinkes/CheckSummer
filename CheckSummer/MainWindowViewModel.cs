@@ -134,6 +134,11 @@ namespace CheckSummer
             ShortcutExists = CheckShortcut();
         }
 
+        internal void CalcChecksums(string filename)
+        {
+            CalcChecksums(new[] {filename});
+        }
+
         internal void CalcChecksums(string[] filenames)
         {
             Task.Factory.StartNew(() =>

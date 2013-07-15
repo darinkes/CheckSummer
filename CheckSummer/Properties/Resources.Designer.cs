@@ -124,6 +124,15 @@ namespace CheckSummer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Exit.
+        /// </summary>
+        public static string Exit {
+            get {
+                return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _File.
         /// </summary>
         public static string File {
@@ -192,6 +201,15 @@ namespace CheckSummer.Properties {
         public static string MainWindowViewModel_CalcChecksums_Ready__Time___0__Size___1__Count___2_ {
             get {
                 return ResourceManager.GetString("MainWindowViewModel_CalcChecksums_Ready__Time___0__Size___1__Count___2_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Open.
+        /// </summary>
+        public static string Open {
+            get {
+                return ResourceManager.GetString("Open", resourceCulture);
             }
         }
         

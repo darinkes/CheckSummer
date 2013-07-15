@@ -138,6 +138,9 @@
   <data name="DragDropInfo" xml:space="preserve">
     <value>Drag&amp;Drop deine Dateien/Ordner hier</value>
   </data>
+  <data name="Exit" xml:space="preserve">
+    <value>_Beenden</value>
+  </data>
   <data name="File" xml:space="preserve">
     <value>_Datei</value>
   </data>
@@ -161,6 +164,9 @@
   </data>
   <data name="MainWindow_MainWindow_OnDrop_Please_wait_till_Calculation_has_finished" xml:space="preserve">
     <value>Bitte warte bis die Berechnung abgeschlossen ist</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>_Öffnen</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>Status:</value>

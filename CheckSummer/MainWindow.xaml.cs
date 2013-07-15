@@ -121,5 +121,22 @@ namespace CheckSummer
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
         }
+
+        private void MenuItemExit_OnClick(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown(0);
+        }
+
+        private void MenuItemOpen_OnClick(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog();
+
+            var result = dlg.ShowDialog();
+
+            if (result.Value)
+            {
+                _mainWindowViewModel.CalcChecksums(dlg.FileName);
+            }
+        }
     }
 }

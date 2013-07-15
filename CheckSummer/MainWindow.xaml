@@ -59,6 +59,7 @@
 
         <Menu Grid.Row="0">
             <MenuItem Header="{lex:Loc File}">
+                <MenuItem Header="{lex:Loc Open}" Click="MenuItemOpen_OnClick"/>
                 <MenuItem Header="{lex:Loc Language}">
                     <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding Language}" SelectionChanged="Selector_OnSelectionChanged">
                         <ComboBox.ItemTemplate>
@@ -69,6 +70,7 @@
                     </ComboBox>
                 </MenuItem>
                 <MenuItem Header="{lex:Loc AddShortcut}" Click="MenuItem_OnClick" IsChecked="{Binding ShortcutExists}" IsCheckable="True"/>
+                <MenuItem Header="{lex:Loc Exit}" Click="MenuItemExit_OnClick"/>
             </MenuItem>
         </Menu>
 
