@@ -168,6 +168,12 @@
   <data name="Open" xml:space="preserve">
     <value>_Öffnen</value>
   </data>
+  <data name="OpenList" xml:space="preserve">
+    <value>_Liste öffnen</value>
+  </data>
+  <data name="SaveList" xml:space="preserve">
+    <value>Liste _speichern</value>
+  </data>
   <data name="Status" xml:space="preserve">
     <value>Status:</value>
   </data>

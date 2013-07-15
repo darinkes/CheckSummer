@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CheckSummer
 {
-    public class CheckSummedFile
+    public class CheckSummedFile : INotifyPropertyChanged
     {
         #region Properties
         public string Md5 { get; private set; }
@@ -16,6 +17,46 @@ namespace CheckSummer
         public string Filename { get; private set; }
         public long FileSize { get; private set; }
         public TimeSpan SummedTime { get; private set; }
+
+        private bool _md5Verified;
+
+        public bool Md5Verified
+        {
+            get { return _md5Verified; }
+            set { _md5Verified = value; RaisePropertyChanged("Md5Verified"); }
+        }
+
+        private bool _sha1Verified;
+
+        public bool Sha1Verified
+        {
+            get { return _sha1Verified; }
+            set { _sha1Verified = value; RaisePropertyChanged("Sha1Verified"); }
+        }
+
+        private bool _sha256Verified;
+
+        public bool Sha256Verified
+        {
+            get { return _sha256Verified; }
+            set { _sha256Verified = value; RaisePropertyChanged("Sha256Verified"); }
+        }
+
+        private bool _sha512Verified;
+
+        public bool Sha512Verified
+        {
+            get { return _sha512Verified; }
+            set { _sha512Verified = value; RaisePropertyChanged("Sha512Verified"); }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void RaisePropertyChanged(string property)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+        }
         #endregion
 
         #region Fields

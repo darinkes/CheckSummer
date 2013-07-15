@@ -141,13 +141,30 @@ namespace CheckSummer
 
         private void ButtonBaseSave_OnClick(object sender, RoutedEventArgs e)
         {
-            var dlg = new Microsoft.Win32.SaveFileDialog {FileName = "test"};
+            var dlg = new Microsoft.Win32.SaveFileDialog {
+                FileName = "CheckSummerList.txt",
+            };
 
             var result = dlg.ShowDialog();
 
             if (result.Value)
             {
                 _mainWindowViewModel.SaveChecksums(dlg.FileName);
+            }
+        }
+
+        private void MenuItemOpenList_OnClick(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog()
+            {
+                FileName = "CheckSummerList.txt",
+            };
+
+            var result = dlg.ShowDialog();
+
+            if (result.Value)
+            {
+                _mainWindowViewModel.LoadChecksums(dlg.FileName);
             }
         }
     }

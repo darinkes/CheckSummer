@@ -60,6 +60,9 @@
         <Menu Grid.Row="0">
             <MenuItem Header="{lex:Loc File}">
                 <MenuItem Header="{lex:Loc Open}" Click="MenuItemOpen_OnClick"/>
+                <MenuItem Header="{lex:Loc SaveList}" Click="ButtonBaseSave_OnClick"/>
+                <MenuItem Header="{lex:Loc OpenList}" Click="MenuItemOpenList_OnClick"></MenuItem>
+                <Separator/>
                 <MenuItem Header="{lex:Loc Language}">
                     <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding Language}" SelectionChanged="Selector_OnSelectionChanged">
                         <ComboBox.ItemTemplate>
@@ -70,6 +73,7 @@
                     </ComboBox>
                 </MenuItem>
                 <MenuItem Header="{lex:Loc AddShortcut}" Click="MenuItem_OnClick" IsChecked="{Binding ShortcutExists}" IsCheckable="True"/>
+                <Separator/>
                 <MenuItem Header="{lex:Loc Exit}" Click="MenuItemExit_OnClick"/>
             </MenuItem>
         </Menu>
@@ -178,6 +182,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                             <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
                         <Grid.RowDefinitions>
@@ -201,15 +206,19 @@
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="MD5:" Margin="3"/>
                         <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Md5, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
+                        <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Md5Verified, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="SHA1:" Margin="3"/>
                         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Sha1, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
+                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Sha1Verified, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="SHA256:" Margin="3"/>
                         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Sha256, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
+                        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Sha256Verified, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="SHA512:" Margin="3"/>
                         <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Sha512, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
+                        <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding Sha512Verified, Mode=OneWay}" IsReadOnly="True" Margin="3"/>
 
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="{lex:Loc FileSize}" Margin="3"/>
                         <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding FileSize, Mode=OneWay, Converter={StaticResource ByteConverter}}" IsReadOnly="True" Margin="3"/>
@@ -234,7 +243,7 @@
                     </Style.Triggers>
                 </Style>
             </DockPanel.Resources>
-            <Button Margin="3" DockPanel.Dock="Right" HorizontalAlignment="Right" Content="Save List" Click="ButtonBaseSave_OnClick"/>
+            <Button Margin="3" DockPanel.Dock="Right" HorizontalAlignment="Right" Content="{lex:Loc SaveList}" Click="ButtonBaseSave_OnClick"/>
             <Button Margin="3" DockPanel.Dock="Right" HorizontalAlignment="Right" Click="ButtonBase_OnClick">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="{StaticResource Clear}" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></Image>

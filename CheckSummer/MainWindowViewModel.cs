@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,6 +20,8 @@ namespace CheckSummer
     {
         #region Properties
         public ObservableCollection<CheckSummedFile> CheckSummedFiles { get; private set; }
+
+        public ObservableCollection<CheckSumFileInfo> CheckSumFileInfos { get; private set; } 
 
         public List<Language> Languages { get; private set; }
 
@@ -99,6 +103,22 @@ namespace CheckSummer
             set { _selectedCheckSummedFile = value; RaisePropertyChanged("SelectedCheckSummedFile"); }
         }
 
+        private string _BasePath;
+
+        public string BasePath
+        {
+            get { return _BasePath; }
+            set { _BasePath = value; RaisePropertyChanged("BasePath"); }
+        }
+
+        private bool _verified;
+
+        public bool Verified
+        {
+            get { return _verified; }
+            set { _verified = value; RaisePropertyChanged("Verified"); }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void RaisePropertyChanged(string property)
@@ -110,11 +130,13 @@ namespace CheckSummer
 
         #region Fields
         private readonly Stopwatch _stopwatch;
+        private readonly Regex _checksumfileRegex = new Regex(@"(?<type>.+)\s+\((?<filename>.+)\) = (?<checksum>.+)", RegexOptions.Compiled);
         #endregion
 
         public MainWindowViewModel()
         {
             CheckSummedFiles = new ObservableCollection<CheckSummedFile>();
+            CheckSumFileInfos = new ObservableCollection<CheckSumFileInfo>();
             _stopwatch = new Stopwatch();
             Status = "";
             Languages = new List<Language>
@@ -158,8 +180,10 @@ namespace CheckSummer
                     {
                         var attr = File.GetAttributes(filename);
                         if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+                        {
                             files2Calc.AddRange(Directory.GetFiles(filename, "*.*",
-                                SearchOption.AllDirectories));
+                                                                   SearchOption.AllDirectories));
+                        }
                         else
                             files2Calc.Add(filename);
                     }
@@ -173,11 +197,13 @@ namespace CheckSummer
                         var checkfile = new CheckSummedFile(file);
                         checkfile.CalcCheckSums();
                         checkfile.Wait();
+
                         calcedsize += checkfile.FileSize;
                         int index1 = index;
                         Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                             new Action(() =>
                             {
+                                VerifyChecksums(new[] {checkfile});
                                 CheckSummedFiles.Add(checkfile);
                                 Progress = (index1 / (double)files2Calc.Count) * 100;
                                 if (SelectedCheckSummedFile == null)
@@ -203,6 +229,36 @@ namespace CheckSummer
                     }));
                 }
             });
+        }
+
+        private void VerifyChecksums(IEnumerable<CheckSummedFile> checkSummedFiles)
+        {
+            foreach (var checkfile in checkSummedFiles)
+            {
+                var toverify = CheckSumFileInfos.Where(cf => checkfile.Filename == cf.Filename).ToList();
+
+                Debug.WriteLine("Verifying Checksum: " + checkfile.Filename + " " + toverify.Count());
+
+                foreach (var checkSumFileInfo in toverify)
+                {
+                    Debug.WriteLine(checkSumFileInfo.Type + " " + checkSumFileInfo.Filename + " " + checkSumFileInfo.Checksum);
+                    switch (checkSumFileInfo.Type)
+                    {
+                        case "MD5":
+                            checkfile.Md5Verified = checkfile.Md5 == checkSumFileInfo.Checksum;
+                            break;
+                        case "SHA1":
+                            checkfile.Sha1Verified = checkfile.Sha1 == checkSumFileInfo.Checksum;
+                            break;
+                        case "SHA256":
+                            checkfile.Sha256Verified = checkfile.Sha256 == checkSumFileInfo.Checksum;
+                            break;
+                        case "SHA512":
+                            checkfile.Sha512Verified = checkfile.Sha512 == checkSumFileInfo.Checksum;
+                            break;
+                    }
+                }
+            }
         }
 
         private bool CheckShortcut()
@@ -263,6 +319,14 @@ namespace CheckSummer
             var tosave = new StringBuilder();
             foreach (var entry in CheckSummedFiles)
             {
+                tosave.AppendLine(string.Format("MD5 ({0}) = {1}",
+                                entry.Filename,
+                                entry.Md5
+                      ));
+                tosave.AppendLine(string.Format("SHA1 ({0}) = {1}",
+                                entry.Filename,
+                                entry.Sha1
+                      ));
                 tosave.AppendLine(string.Format("SHA256 ({0}) = {1}",
                                                 entry.Filename,
                                                 entry.Sha256
@@ -273,6 +337,30 @@ namespace CheckSummer
                       ));
             }
             File.WriteAllText(filename, tosave.ToString(), Encoding.Default);
+        }
+
+        internal void LoadChecksums(string filename)
+        {
+            var checksumlist = File.ReadAllLines(filename);
+            CheckSumFileInfos.Clear();
+            foreach (var entry in checksumlist)
+            {
+                var match = _checksumfileRegex.Match(entry);
+                if (!match.Success)
+                {
+                    Debug.WriteLine("Line does not Match: " + entry);
+                    continue;
+                }
+                var info = new CheckSumFileInfo
+                    {
+                        Checksum = match.Groups["checksum"].Value,
+                        Filename = match.Groups["filename"].Value,
+                        Type = match.Groups["type"].Value
+                    };
+                CheckSumFileInfos.Add(info);
+            }
+            Debug.WriteLine("Imported " + CheckSumFileInfos.Count + " CheckSumFileInfos");
+            VerifyChecksums(CheckSummedFiles);
         }
     }
 }
