@@ -6,7 +6,8 @@
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources"
         lex:ResxLocalizationProvider.DefaultAssembly="CheckSummer"
-        Title="CheckSummer" Height="768" Width="1024" AllowDrop="True" Drop="MainWindow_OnDrop">
+        Title="CheckSummer" Height="600" Width="800" AllowDrop="True" Drop="MainWindow_OnDrop"
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <checkSummer:ByteConverter x:Key="ByteConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
