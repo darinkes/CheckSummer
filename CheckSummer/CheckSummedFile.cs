@@ -38,23 +38,17 @@ namespace CheckSummer
         {
             _stopwatch.Start();
 
-            var fs = File.OpenRead(Filename);
-            var bytes = new byte[fs.Length];
-            try
-            {
-                fs.Read(bytes, 0, Convert.ToInt32(fs.Length));
-                fs.Close();
-            }
-            finally
-            {
-                fs.Close();
-            }
-
             _md5Task = Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    Md5 = BitConverter.ToString(MD5.Create().ComputeHash(bytes)).Replace("-", String.Empty).ToLower();
+                    using(var stream = new BufferedStream(File.OpenRead(Filename), 1200000))
+                    {
+                        Md5 =
+                            BitConverter.ToString(MD5.Create().ComputeHash(stream))
+                            .Replace("-", String.Empty)
+                            .ToLower();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -67,7 +61,13 @@ namespace CheckSummer
             {
                 try
                 {
-                    Sha1 = BitConverter.ToString(SHA1.Create().ComputeHash(bytes)).Replace("-", String.Empty).ToLower();
+                    using (var stream = new BufferedStream(File.OpenRead(Filename), 1200000))
+                    {
+                        Sha1 =
+                            BitConverter.ToString(SHA1.Create().ComputeHash(stream))
+                            .Replace("-", String.Empty)
+                            .ToLower();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -80,7 +80,13 @@ namespace CheckSummer
             {
                 try
                 {
-                    Sha256 = BitConverter.ToString(SHA256.Create().ComputeHash(bytes)).Replace("-", String.Empty).ToLower();
+                    using (var stream = new BufferedStream(File.OpenRead(Filename), 1200000))
+                    {
+                        Sha256 =
+                            BitConverter.ToString(SHA256.Create().ComputeHash(stream))
+                                        .Replace("-", String.Empty)
+                                        .ToLower();
+                    }
 
                 }
                 catch (Exception ex)
@@ -94,7 +100,13 @@ namespace CheckSummer
             {
                 try
                 {
-                    Sha512 = BitConverter.ToString(SHA512.Create().ComputeHash(bytes)).Replace("-", String.Empty).ToLower();
+                    using (var stream = new BufferedStream(File.OpenRead(Filename), 1200000))
+                    {
+                        Sha512 =
+                            BitConverter.ToString(SHA512.Create().ComputeHash(stream))
+                                        .Replace("-", String.Empty)
+                                        .ToLower();
+                    }
 
                 }
                 catch (Exception ex)
