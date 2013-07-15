@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Navigation;
 using WPFLocalizeExtension.Engine;
 
 namespace CheckSummer
@@ -112,6 +114,12 @@ namespace CheckSummer
         private void MenuItem_OnClick(object sender, RoutedEventArgs e)
         {
             _mainWindowViewModel.SetShortcut();
+        }
+
+        private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
         }
     }
 }

@@ -72,16 +72,23 @@
             </MenuItem>
         </Menu>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
-            <TextBlock Text="Filter:" Margin="5" FontSize="16" VerticalAlignment="Center"/>
-            <TextBox Width="200" Margin="5" Padding="5" Text="{Binding Filter}" TextChanged="TextBoxBase_OnTextChanged"/>
-            <Button Margin="5" HorizontalAlignment="Right" Click="ButtonBase_OnClick2">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="{StaticResource Clear}" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></Image>
-                    <TextBlock Text="{lex:Loc Clear}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></TextBlock>
-                </StackPanel>
-            </Button>
-        </StackPanel>
+        <DockPanel Grid.Row="1" >
+            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="5">
+                <TextBlock Text="Filter:" Margin="5" FontSize="16" VerticalAlignment="Center"/>
+                <TextBox Width="200" Margin="5" Padding="5" Text="{Binding Filter}" TextChanged="TextBoxBase_OnTextChanged"/>
+                <Button Margin="5" HorizontalAlignment="Right" Click="ButtonBase_OnClick2">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource Clear}" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></Image>
+                        <TextBlock Text="{lex:Loc Clear}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></TextBlock>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5">
+                <Hyperlink NavigateUri="https://github.com/darinkes/CheckSummer" RequestNavigate="Hyperlink_OnRequestNavigate">
+                    GitHub-Repo
+                </Hyperlink>
+            </TextBlock>
+        </DockPanel>
 
         <TextBlock Grid.Row="2" Text="{lex:Loc DragDropInfo}" Foreground="DarkBlue" FontWeight="Bold" FontSize="20"
                     HorizontalAlignment="Center" Margin="0,100,0,0">
